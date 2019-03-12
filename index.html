@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Individual Page</title>
+	<script src="js/main.js"></script>
+    <link href="css/default.css" rel="stylesheet" />
+</head>
+
+<body>
+    <h1>Flight Works Alabama</h1>
+
+    <!--Employee Information-->
+
+    <label id="minutes">00</label>:<label id="seconds">00</label>
+    <p>
+    <div style="float: left">Status: <b>Normal</b></div>									<!--Get Status and Name from Database -->
+    <div style="float: right"><form action="loginPage.html"><input type="submit" value="Log Out" /></form></div>		<!--Replace "loginPage.php" with Christian's page-->
+    <div style="margin: 0 auto; width: 100px;">Teddy Roosevelt</div>
+    </p>
+    <!--Tour Information-->
+
+    <p>
+        <b>Tour Info</b>
+        <br>Flight 210												<!--Get Flight Name and number of people from Database-->
+        <br>25 People
+    </p>
+
+
+    <!--Controls and Forms-->
+
+    <select>
+        <option></option>
+        <option value="Building A">Building A</option>
+        <option value="Building B">Building B</option>
+        <option value="On Bus">On Bus</option>
+    </select>
+
+    <button onclick="toggleClock()">Delay</button>
+
+    <form action="viewAllPage.html"><input type="submit" value="View All" /></form>				<!--Replace "viewAllPage.php" with David's Page-->
+
+<textarea name="tour guide's script" cols="30" rows="20"></textarea>
+
+
+</body>
+</html>
