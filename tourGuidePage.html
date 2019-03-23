@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Individual Page</title>
+    <link rel="stylesheet" type="text/css" href="default.css"/>
+</head>
+
+<style>
+    #tour_info {
+        background-color: #0D2C6C;
+        border: none;
+        color: white;
+        padding: 30px 160px;
+        text-align: left;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 6px 2px;
+        cursor: pointer;
+    }
+    .controls {
+        background-color: #0D2C6C;
+        border: none;
+        color: white;
+        padding: 24px 32px;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 6px 2px;
+        cursor: pointer;
+    }
+</style>
+
+<body style = "background-color: #07495f">
+
+
+<div align="center">
+    <img src="images\logo.png" alt="Flight Works Alabama"/>
+</div>
+
+
+<!--Employee Information-->
+
+<form id = "delayClock"><font color="red"><label id="minutes">00</label>:<label id="seconds">00</label></font></form>
+
+<p>
+<div style="float: left; color: white">Status: <b>Normal</b></div>									<!--Get Status and Name from Database -->
+<div style="float: right"><form action="loginPage.html"><input type="submit" value="Log Out" /></form></div>		<!--Replace "loginPage.php" with Christian's page-->
+<div style="margin: 0 auto; width: 100px; color: white">Teddy Roosevelt</div>
+</p>
+<!--Tour Information-->
+
+<p id="tour_info">
+    <font size = "6"><b>Flight 210</b></font>
+    <br>Passengers: 25											<!--Get Flight Name and number of people from Database-->
+    <br>Departure: 11:00 am
+    <br>Landing: 12:00 pm
+</p>
+
+
+<!--Controls and Forms-->
+<form action = "viewAllPage.php" align="center">
+    <select class="controls">
+        <option>Location</option>
+        <option value="Building A">Building A</option>
+        <option value="Building B">Building B</option>
+        <option value="On Bus">On Bus</option>
+    </select>
+    <input type ="button" class="controls" value = "Delay" onclick="toggleClock()"/>
+    <input type = "submit" class="controls" value = "View All"/>
+</form>
+
+<textarea name="tour guide's script" cols="60" rows="20"></textarea>
+
+
+<!--Javascript Scripts-->
+
+<script>
+    var minutesLabel = document.getElementById("minutes");
+    var secondsLabel = document.getElementById("seconds");
+    var totalSeconds = 0;
+    setInterval(setTime, 1000);
+
+    function setTime() {
+        document.getElementById("seconds").innerHTML = pad(totalSeconds % 60);
+        document.getElementById("minutes").innerHTML = pad(parseInt(totalSeconds / 60));
+
+        ++totalSeconds;
+    }
+
+    function pad(val) {
+        var valString = val + "";
+        if (valString.length < 2) {
+            return "0" + valString;
+        } else {
+            return valString;
+        }
+    }
+
+    function toggleClock() {
+        var x = document.getElementById("delayClock");
+        if (x.style.display == "block") {
+            x.style.display = "none";
+        } else {
+            x.style.display = "block";
+            totalSeconds = 0;
+        }
+    }
+</script>
+
+
+
+</body>
+</html>
