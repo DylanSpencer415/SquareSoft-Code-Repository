@@ -50,7 +50,7 @@
          label {
             font-weight:bold;
             width:100px;
-            font-size:14px;
+            font-size:16px;
          }
          .box {
             border:#666666 solid 1px;
@@ -68,8 +68,8 @@
             <div style = "margin:30px">
 
                <form action = "" method = "post">
-                  <label>Enter UserName  :</label> <input type = "text" name = "username" class = "box"/><br /><br />
-                  <label>Enter Password  :</label> <input type = "password" name = "password" class = "box"/><br /><br />
+                  <label>UserName  :</label> <input type = "text" name = "username" class = "box"/><br /><br />
+                  <label>Password  : </label> <input type = "password" name = "password" class = "box"/><br /><br />
                   <input type = "submit" value = "  Submit "/><br />
                </form>
 
