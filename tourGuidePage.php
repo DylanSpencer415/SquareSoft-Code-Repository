@@ -100,12 +100,12 @@
 <?php
 $tourGuideName = "Theodore Roosevelt";
 $status = "Normal";
-$flightNumber = "210";
 $numberOfPassengers = "25";
-$departureString = "11:00:00";
+$departureString = "05:00:00";
 $departureTime = strtotime($departureString);
-$landingString = "12:00:00";
+$landingString = "16:00:00";
 $landingTime = strtotime($landingString);
+$flightNumber = date('Gi', $departureTime);
 ?>
 
 <div align="center">
@@ -128,8 +128,8 @@ echo "
     <div class = 'tour_info'>
         <font size = '6'><b>Flight $flightNumber</b></font>
         <br>Passengers: $numberOfPassengers
-        <br>Departure:" . date('h', $departureTime) .  ":" . date('i', $departureTime) . "
-        <br>Landing:" . date('h', $landingTime) .  ":" . date('i', $landingTime) . "
+        <br>Departure: " . date('g:i a', $departureTime) . "
+        <br>Landing: " . date('g:i a', $landingTime) . "
     </div>
     ";
 
@@ -139,7 +139,7 @@ echo "
     <form action = 'viewAllPage.php' align='center'>
         <select class='controls'>
             <option>Location</option>
-            <option value='Building A'>Building A</option>
+            <option value='Building A'>Building D</option>
             <option value='Building B'>Building B</option>
             <option value='On Bus'>On Bus</option>
         </select>
