@@ -63,7 +63,8 @@
         }
     </style>
 </head>
-<body>
+
+<body style = "background-color: #B7C7D3">
 
 <table width="585" border="1" cellpadding="1" cellspacing="1">
     <tr>
@@ -73,82 +74,82 @@
         <th>Delayed</th>
     </tr>
 
-<?php
+    <?php
 
 
-$FromFAL = "";
-$FromFW = "";
-$FAL = "";
-$FW = "";
+    $FromFAL = "";
+    $FromFW = "";
+    $FAL = "";
+    $FW = "";
 
-$currenttime = 1000;
+    $currenttime = 1000;
 
-$tour = array
-(
-    array(1015,"Flightworks",18,FALSE),
-    array(1025,"Flightworks, traveling",13,FALSE),
-    array(1045,"FAL",20,TRUE),
-    array(1100,"FAL, traveling",15,FALSE),
-    array(1115,"FAL",12,FALSE),
-    array(1130,"FAL",30,FALSE)
-);
+    $tour = array
+    (
+        array(1015,"Flightworks",18,FALSE),
+        array(1025,"Flightworks, traveling",13,FALSE),
+        array(1045,"FAL",20,TRUE),
+        array(1100,"FAL, traveling",15,FALSE),
+        array(1115,"FAL",12,FALSE),
+        array(1130,"FAL",30,FALSE)
+    );
 
 
-//loop through each tour and display the info on the table
-foreach($tour as $row) {
-    //if time is an hour past in either direction of the current time don't display those results this needs to be adjusted
-    if (($row[0]-$currenttime) < 101 && ($row[0]-$currenttime) > -101) {
-        echo('<tr>');
-        if($row[1] == "Flightworks")
-        {
-            if($FW)
+    //loop through each tour and display the info on the table
+    foreach($tour as $row) {
+        //if time is an hour past in either direction of the current time don't display those results this needs to be adjusted
+        if (($row[0]-$currenttime) < 101 && ($row[0]-$currenttime) > -101) {
+            echo('<tr>');
+            if($row[1] == "Flightworks")
             {
-                $FW .= " " . $row[0];
+                if($FW)
+                {
+                    $FW .= " " . $row[0];
+                }
+                else
+                    $FW = "Flight " . $row[0];
             }
-            else
-                $FW = "Flight " . $row[0];
-        }
 
-        elseif($row[1] == "Flightworks, traveling")
-        {
-            if($FromFW)
+            elseif($row[1] == "Flightworks, traveling")
             {
-                $FromFW .= " " . $row[0];
+                if($FromFW)
+                {
+                    $FromFW .= " " . $row[0];
+                }
+                else
+                    $FromFW = "Flight " . $row[0];
             }
-            else
-                $FromFW = "Flight " . $row[0];
-        }
 
-        elseif($row[1] == "FAL")
-        {
-            if($FAL)
+            elseif($row[1] == "FAL")
             {
-                $FAL .= " " . $row[0];
+                if($FAL)
+                {
+                    $FAL .= " " . $row[0];
+                }
+                else
+                    $FAL = "Flight " . $row[0];
             }
-            else
-                $FAL = "Flight " . $row[0];
-        }
 
-        elseif($row[1] == "FAL, traveling")
-        {
-            if($FromFAL)
+            elseif($row[1] == "FAL, traveling")
             {
-                $FromFAL .= " " . $row[0];
+                if($FromFAL)
+                {
+                    $FromFAL .= " " . $row[0];
+                }
+                else
+                    $FromFAL = "Flight " . $row[0];
             }
-            else
-                $FromFAL = "Flight " . $row[0];
-        }
-        foreach ($row as $cell) {
-            echo('<td>' . $cell . '</td>');
-        }
-        echo('</tr>');
+            foreach ($row as $cell) {
+                echo('<td>' . $cell . '</td>');
+            }
+            echo('</tr>');
 
 
+        }
     }
-}
 
 
-?>
+    ?>
 
 </table>
 
