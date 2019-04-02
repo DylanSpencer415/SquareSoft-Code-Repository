@@ -1,3 +1,7 @@
+<?php
+// Start the session
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -98,13 +102,35 @@
 <body>
 
 <?php
+
+$_SESSION["ID"] = "12345";
+$tourGuideID = $_SESSION["ID"];  //get session from login page
+
+//$rowData = mysql_query("SELECT * FROM table WHERE id = " . $id);
+
 $tourGuideName = "Theodore Roosevelt";
-$status = "Normal";
+//$tourGuideName = mysql_fetch_assoc($rowData);
+
+$statusText = "Normal";
+//$status = mysql_fetch_assoc($rowData);
+/*
+if ($status == 0){
+    $statusText = "Normal";
+}
+else { $statusText = "Delayed";}
+*/
+
 $numberOfPassengers = "25";
-$departureString = "05:00:00";
+//$numberOfPassengers = mysql_fetch_assoc($rowData);
+
+$departureString = "15:00:00";
 $departureTime = strtotime($departureString);
+//$departureTime = mysql_fetch_assoc($rowData);
+
 $landingString = "16:00:00";
 $landingTime = strtotime($landingString);
+//$landingTime = mysql_fetch_assoc($rowData);
+
 $flightNumber = date('Gi', $departureTime);
 ?>
 
@@ -115,10 +141,8 @@ $flightNumber = date('Gi', $departureTime);
 
 <!--Employee Information-->
 
-<form id = "delayClock"><font color="red"><label id="minutes">00</label>:<label id="seconds">00</label></font></form>
-
 <?php
-echo "<div style='float: left; color: white'>Status: <b>$status</b></div>";
+echo "<div style='float: left; color: white'>Status: <b>$statusText</b></div>";
 echo "<div style='float: right'><form action='login.php'><input type='submit' value='Log Out' /></form></div>";
 echo "<div style= 'margin: 0 auto; width: 100px; color: white'>$tourGuideName</div>";
 
@@ -137,58 +161,25 @@ echo "
 //Controls and Forms
 echo "
     <form action = 'viewAllPage.php' align='center'>
-        <select class='controls'>
+        <select  onchange=\"updateLocation()\" class='controls'>
             <option>Location</option>
-            <option value='Building A'>Building D</option>
+            <option value='Building A'>Building A</option>
             <option value='Building B'>Building B</option>
             <option value='On Bus'>On Bus</option>
         </select>
         <input type ='button' class='controls' value = 'Delay' onclick='toggleClock()'/>
         <input type = 'submit' class='controls' value = 'View All'/>
     </form> 
-    "
+    ";
+
+    function updateLocation() {
+        header("Refresh:0");
+    }
 ?>
 
 <textarea readonly cols="80" rows="40">
    Here is the spot to add a script to.
 </textarea>
-
-
-<!--Javascript Scripts-->
-
-<script>
-    var minutesLabel = document.getElementById("minutes");
-    var secondsLabel = document.getElementById("seconds");
-    var totalSeconds = 0;
-    setInterval(setTime, 1000);
-
-    function setTime() {
-        document.getElementById("seconds").innerHTML = pad(totalSeconds % 60);
-        document.getElementById("minutes").innerHTML = pad(parseInt(totalSeconds / 60));
-
-        ++totalSeconds;
-    }
-
-    function pad(val) {
-        var valString = val + "";
-        if (valString.length < 2) {
-            return "0" + valString;
-        } else {
-            return valString;
-        }
-    }
-
-    function toggleClock() {
-        var x = document.getElementById("delayClock");
-        if (x.style.display == "block") {
-            x.style.display = "none";
-        } else {
-            x.style.display = "block";
-            totalSeconds = 0;
-        }
-    }
-</script>
-
 
 
 </body>
