@@ -32,12 +32,12 @@
     // Validate credentials
     if(empty($username_err) && empty($password_err)){
         // Prepare a select statement
-        $sql = "SELECT Username FROM employee WHERE Username = $username";
+        $sql = "SELECT EmpID FROM `dbo.employee`WHERE username = '$username' AND password = '$password'";
         
-        if($stmt = mysqli_prepare($db, $sql)){
+        if($stmt = mysqli_prepare($db, $sql)) {
             // Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "s", $param_username);
-            
+            echo "hi";
             // Set parameters
             $param_username = $username;
             
@@ -45,9 +45,8 @@
             if(mysqli_stmt_execute($stmt)){
                 // Store result
                 mysqli_stmt_store_result($stmt);
-                
-                // Check if username exists, if yes then verify password
-                if(mysqli_stmt_num_rows($stmt) == 1 || mysqli_stmt_num_rows($stmt) != 1 ){                    
+            
+                if(mysqli_stmt_num_rows($stmt) == 1){                    
                     // Bind result variables
                     mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password);
                     if(mysqli_stmt_fetch($stmt)){
