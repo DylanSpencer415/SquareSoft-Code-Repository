@@ -116,8 +116,12 @@ $statusText = "Normal";
 /*
 if ($status == 0){
     $statusText = "Normal";
+    $statusColor = "lightgreen";
 }
-else { $statusText = "Delayed";}
+else {
+    $statusText = "Delayed";
+    $statusColor = "red";
+}
 */
 
 $numberOfPassengers = "25";
@@ -142,7 +146,6 @@ $flightNumber = date('Gi', $departureTime);
 <!--Employee Information-->
 
 <?php
-echo "<div style='float: left; color: white'>Status: <b>$statusText</b></div>";
 echo "<div style='float: right'><form action='login.php'><input type='submit' value='Log Out' /></form></div>";
 echo "<div style= 'margin: 0 auto; width: 100px; color: white'>$tourGuideName</div>";
 
@@ -154,6 +157,7 @@ echo "
         <br>Passengers: $numberOfPassengers
         <br>Departure: " . date('g:i a', $departureTime) . "
         <br>Landing: " . date('g:i a', $landingTime) . "
+        <br><font color=\"lightgreen\">Status: <b>$statusText</b></font>
     </div>
     ";
 
