@@ -2,6 +2,65 @@
 // Start the session
 session_start();
 ?>
+
+<?php
+    $_SESSION["ID"] = "12345";
+    $tourGuideID = $_SESSION["ID"];  //get session from login page
+
+    //$rowData = mysql_query("SELECT * FROM table WHERE id = " . $id);
+
+    $tourGuideName = "Theodore Roosevelt";
+    //$tourGuideName = mysql_fetch_assoc($rowData);
+
+    $status = 0;
+    //$status = mysql_fetch_assoc($rowData);
+
+    if ($status == 0){
+        $statusText = "Normal";
+        $statusColor = "lightgreen";
+    }
+    else {
+        $statusText = "Delayed";
+        $statusColor = "red";
+    }
+
+
+    $numberOfPassengers = "25";
+    //$numberOfPassengers = mysql_fetch_assoc($rowData);
+
+    $departureString = "15:00:00";
+    $departureTime = strtotime($departureString);
+    //$departureTime = mysql_fetch_assoc($rowData);
+
+    $landingString = "16:00:00";
+    $landingTime = strtotime($landingString);
+    //$landingTime = mysql_fetch_assoc($rowData);
+
+    $flightNumber = date('Gi', $departureTime);
+
+    $location = "Location";
+    //$location = mysql_fetch_assoc($rowData);
+?>
+
+<?php
+function updateStatus($status) {
+    if ($status == 0){
+        //update status to 1
+    }
+    else {
+        //update status to 0
+    }
+}
+
+
+//will run when delay button is clicked
+if (isset($_GET['delayClick'])) {
+    updateStatus($status);
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,18 +99,6 @@ session_start();
         background-color: #07495f
     }
 
-    .button {
-        background-color: #0D2C6C;
-        border: none;
-        color: white;
-        padding: 30px 32px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 6px 2px;
-        cursor: pointer;
-    }
 
     textarea {
         display: block;
@@ -97,93 +144,76 @@ session_start();
         left: 30%;
         transform: translate(-50%, -50%);
     }
+
+    .logoutLblPos{
+        position:fixed;
+        right:10px;
+        top:5px;
+        font-size:50px;
+    }
 </style>
 
 <body>
-
-<?php
-
-$_SESSION["ID"] = "12345";
-$tourGuideID = $_SESSION["ID"];  //get session from login page
-
-//$rowData = mysql_query("SELECT * FROM table WHERE id = " . $id);
-
-$tourGuideName = "Theodore Roosevelt";
-//$tourGuideName = mysql_fetch_assoc($rowData);
-
-$statusText = "Normal";
-//$status = mysql_fetch_assoc($rowData);
-/*
-if ($status == 0){
-    $statusText = "Normal";
-    $statusColor = "lightgreen";
-}
-else {
-    $statusText = "Delayed";
-    $statusColor = "red";
-}
-*/
-
-$numberOfPassengers = "25";
-//$numberOfPassengers = mysql_fetch_assoc($rowData);
-
-$departureString = "15:00:00";
-$departureTime = strtotime($departureString);
-//$departureTime = mysql_fetch_assoc($rowData);
-
-$landingString = "16:00:00";
-$landingTime = strtotime($landingString);
-//$landingTime = mysql_fetch_assoc($rowData);
-
-$flightNumber = date('Gi', $departureTime);
-?>
-
-<div align="center">
-    <img src="images\logo.png" alt="Flight Works Alabama"/>
-</div>
-
-
-<!--Employee Information-->
-
-<?php
-echo "<div style='float: right'><form action='login.php'><input type='submit' value='Log Out' /></form></div>";
-echo "<div style= 'margin: 0 auto; width: 100px; color: white'>$tourGuideName</div>";
-
-//Tour Information
-
-echo "
-    <div class = 'tour_info'>
-        <font size = '6'><b>Flight $flightNumber</b></font>
-        <br>Passengers: $numberOfPassengers
-        <br>Departure: " . date('g:i a', $departureTime) . "
-        <br>Landing: " . date('g:i a', $landingTime) . "
-        <br><font color=\"lightgreen\">Status: <b>$statusText</b></font>
+    <!--FWA LOGO-->
+    <div align="center">
+        <img src="images\logo.png" alt="Flight Works Alabama"/>
     </div>
-    ";
+
+    <!--Logout Button-->
+    <form align="right" name="form1" method="post" action="login.php">
+        <label class="logoutLblPos">
+            <input name="submit2" type="submit" id="submit2" value="Log Out">
+        </label>
+    </form>
+
+    <!--Employee Information-->
+    <?php
+    echo "<div style= 'margin: 0 auto; width: 100px; color: white'>$tourGuideName</div>";
+
+    //Tour Information
+
+    echo "
+        <div class = 'tour_info'>
+            <font size = '6'><b>Flight $flightNumber</b></font>
+            <br>Passengers: $numberOfPassengers
+            <br>Departure: " . date('g:i a', $departureTime) . "
+            <br>Landing: " . date('g:i a', $landingTime) . "
+            <br><font color=$statusColor>Status: <b>$statusText</b></font>
+        </div>
+        ";
 
 
-//Controls and Forms
-echo "
-    <form action = 'viewAllPage.php' align='center'>
-        <select  onchange=\"updateLocation()\" class='controls'>
-            <option>Location</option>
-            <option value='Building A'>Building A</option>
-            <option value='Building B'>Building B</option>
-            <option value='On Bus'>On Bus</option>
-        </select>
-        <input type ='button' class='controls' value = 'Delay' onclick='toggleClock()'/>
-        <input type = 'submit' class='controls' value = 'View All'/>
-    </form> 
-    ";
+    //Controls and Forms
+    echo "
+        <form action = 'viewAllPage.php' align='center' method='post'>
+            <select name = 'Location' class='controls' onchange=\"window.location.href = 'tourGuidePage.php?Location';\"/>
+                <option>$location</option>
+                <option value='Building A'>Building A</option>
+                <option value='Building B'>Building B</option>
+                <option value='On Bus'>On Bus</option>
+            </select>
+            <input type ='button' class='controls' value = 'Delay' onclick= \"window.location.href = 'tourGuidePage.php?delayClick=true';\"/>
+            <input type = 'submit' class='controls' value = 'View All'/>
+        </form> 
+        ";
+    ?>
 
-    function updateLocation() {
-        header("Refresh:0");
-    }
-?>
+    <?php
+        function updateLocation($location){
+            //Update Location
+            echo $location . "!";
+        }
 
-<textarea readonly cols="80" rows="40">
-   Here is the spot to add a script to.
-</textarea>
+        //will run when location is changed
+        if (isset($_POST['Location'])) {
+            updateLocation($location);
+        }
+    ?>
+
+
+    <textarea readonly cols="80" rows="40">
+       Here is the spot to add a script to.
+    </textarea>
 
 
 </body>
