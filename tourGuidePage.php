@@ -1,21 +1,33 @@
 <?php
-// Start the session
-session_start();
+    // Start the session
+    session_start();
 ?>
 
 <?php
-    $_SESSION["ID"] = "12345";
-    $tourGuideID = $_SESSION["ID"];  //get session from login page
+    $servername = "localhost";
+    $username = "username";
+    $password = "password";
+    $dbname = "myDB";
 
-    //$rowData = mysql_query("SELECT * FROM table WHERE id = " . $id);
+    // Create connection
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+?>
 
-    $tourGuideName = "Theodore Roosevelt";
-    //$tourGuideName = mysql_fetch_assoc($rowData);
+<?php
+    $_SESSION["EmpId"] = "12345";
+    $tourGuideID = $_SESSION["EmpId"];  //get session from login page
 
-    $status = 0;
-    //$status = mysql_fetch_assoc($rowData);
+    $guideRowData = mysql_query("SELECT * FROM Employee WHERE EmpId = " . $tourGuideID);
+    $Name = mysql_fetch_assoc($Employee);
+    $tourRowData = mysql_query("SELECT * FROM tourInfo WHERE guide = " . $Name);
 
-    if ($status == 0){
+
+    $delay = mysql_fetch_assoc($tourRowData);
+    if ($delay == 0){
         $statusText = "Normal";
         $statusColor = "lightgreen";
     }
@@ -24,41 +36,39 @@ session_start();
         $statusColor = "red";
     }
 
+    $numberOfParticipants = mysql_fetch_assoc($tourRowData);
+    $startTime = mysql_fetch_assoc($tourRowData);
+    $endTime = mysql_fetch_assoc($tourRowData);
+    $flightNumber = date('Gi', $startTime);
 
-    $numberOfPassengers = "25";
-    //$numberOfPassengers = mysql_fetch_assoc($rowData);
-
-    $departureString = "15:00:00";
-    $departureTime = strtotime($departureString);
-    //$departureTime = mysql_fetch_assoc($rowData);
-
-    $landingString = "16:00:00";
-    $landingTime = strtotime($landingString);
-    //$landingTime = mysql_fetch_assoc($rowData);
-
-    $flightNumber = date('Gi', $departureTime);
-
-    $location = "Location";
-    //$location = mysql_fetch_assoc($rowData);
+    if(!empty($_POST['Location'])){
+        $location = $_POST['Location'];
+        $sql = "UPDATE tourInfo SET location='$location' WHERE guide = " . $Name;
+    }
+    else $location = "Location";
 ?>
 
 <?php
-function updateStatus($status) {
-    if ($status == 0){
-        //update status to 1
+function updateStatus($delay, $Name) {
+    if ($delay == 0){
+        $sql = "UPDATE tourInfo SET delay=1 WHERE guide = " . $Name;
     }
     else {
-        //update status to 0
+        $sql = "UPDATE tourInfo SET delay=0 WHERE guide = " . $Name;
     }
 }
 
 
 //will run when delay button is clicked
 if (isset($_GET['delayClick'])) {
-    updateStatus($status);
+    updateStatus($delay, $Name);
 }
 
 ?>
+<?php
+    $conn->close();
+?>
+
 
 
 <!DOCTYPE html>
@@ -147,71 +157,65 @@ if (isset($_GET['delayClick'])) {
 
     .logoutLblPos{
         position:fixed;
+        box-sizing: content-box;
         right:10px;
         top:5px;
         font-size:50px;
     }
 </style>
 
+
+
+
 <body>
-    <!--FWA LOGO-->
-    <div align="center">
-        <img src="images\logo.png" alt="Flight Works Alabama"/>
-    </div>
+<!--FWA LOGO-->
+<div align="center">
+    <img src="images\logo.png" alt="Flight Works Alabama"/>
+</div>
 
-    <!--Logout Button-->
-    <form align="right" name="form1" method="post" action="login.php">
-        <label class="logoutLblPos">
-            <input name="submit2" type="submit" id="submit2" value="Log Out">
-        </label>
-    </form>
 
-    <!--Employee Information-->
-    <?php
-    echo "<div style= 'margin: 0 auto; width: 100px; color: white'>$tourGuideName</div>";
 
-    //Tour Information
 
-    echo "
+<!--Employee Information-->
+<?php
+echo "<div style= 'font-size: 160%; margin: 0 auto; width: 100px; color: white'>$Name</div>";
+
+//Tour Information
+
+echo "
         <div class = 'tour_info'>
             <font size = '6'><b>Flight $flightNumber</b></font>
-            <br>Passengers: $numberOfPassengers
-            <br>Departure: " . date('g:i a', $departureTime) . "
-            <br>Landing: " . date('g:i a', $landingTime) . "
+            <br>Passengers: $numberOfParticipants
+            <br>Departure: " . date('g:i a', $startTime) . "
+            <br>Landing: " . date('g:i a', $endTime) . "
             <br><font color=$statusColor>Status: <b>$statusText</b></font>
         </div>
         ";
 
 
-    //Controls and Forms
-    echo "
+//Controls and Forms
+echo "
         <form action = 'viewAllPage.php' align='center' method='post'>
-            <select name = 'Location' class='controls' onchange=\"window.location.href = 'tourGuidePage.php?Location';\"/>
+            <select name = 'Location' class='controls'>
                 <option>$location</option>
-                <option value='Building A'>Building A</option>
-                <option value='Building B'>Building B</option>
-                <option value='On Bus'>On Bus</option>
+                <option value='FlightWorks'>FlightWorks</option>
+                <option value='Final Assembly Line'>FAL</option>
+                <option value='On Bus to FW'>On Bus -> FW</option>
+                <option value='On Bus to FAL'>On Bus -> FAL</option>
             </select>
             <input type ='button' class='controls' value = 'Delay' onclick= \"window.location.href = 'tourGuidePage.php?delayClick=true';\"/>
             <input type = 'submit' class='controls' value = 'View All'/>
-        </form> 
+
+            <!--Logout Button-->
+            <input type =\"button\" class='controls' value = 'Log Out' onclick= \"window.location.href = 'login.php';\"/>
+        </form>
+
+
         ";
-    ?>
-
-    <?php
-        function updateLocation($location){
-            //Update Location
-            echo $location . "!";
-        }
-
-        //will run when location is changed
-        if (isset($_POST['Location'])) {
-            updateLocation($location);
-        }
-    ?>
+?>
 
 
-    <textarea readonly cols="80" rows="40">
+<textarea readonly cols="80" rows="40">
        Here is the spot to add a script to.
     </textarea>
 
